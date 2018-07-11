@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Karma:300,400" rel="stylesheet">
+  <title>GUESS THE FUCKING COLOR</title>
+  <style>
+    body{
+      padding:0px;
+      margin:0px;
+      overflow-y: hidden; 
+    }
+
+    ul{
+      margin:0px;
+    }
+
+    #color_name{
+      text-transform:uppercase;
+    }
+
+    .header{
+      width:100%;
+      height:auto;
+      padding:20px 0px 20px 0px;
+      text-align:center;
+      font-family:'Karma';
+      line-height:40px;
+      color:#fff;
+      background:#3F6DA2;
+      letter-spacing:1px;
+      transition:background 0.3s;
+    }
+
+    .header #color_name{
+      font-size:50px;
+    }
+
+    .options{
+      width:100%;
+      text-align:center;
+    }
+
+    .options ul{
+      list-style:none;
+      text-align:center;
+      position:relative;
+      left:-70px;
+    }
+
+    .options ul li{
+      display:inline-block;
+      margin:0px 10px 0px 10px;
+      padding:2px 7px 2px 7px;
+      font-family:'Karma';
+      font-weight:800;
+      letter-spacing:1px;
+    }
+
+    .options ul .result{
+      position:absolute;
+      color:#666;
+    }
+
+    .options ul .diffi{
+      position:relative;
+      left:100px;
+    }
+
+    .colors_container{
+      height:100%;
+      width:100%;
+      position:absolute;
+      background:#333;
+      text-align:center;
+    }
+
+    .selected{
+      background:#3F6DA2;
+      color:#fff;
+    }
+
+    .colors_container .color_this{
+      width:120px;
+      height:120px;
+      background:#000;
+      display:inline-block;
+      margin:10px;
+      border-radius:10px;
+      cursor: pointer;
+      transition:background 0.3s;
+    }
+    
+    #change_color{
+      cursor: pointer;
+      transition:background 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+  <div class="header">
+    <span>THE GREAT</span><br>
+    <span id="color_name">RGB(0,0,0)</span><br>
+    <span>GUESSING GAME</span>
+  </div>
+  <div class="options">
+    <ul>
+      <li id="change_color">NEW COLOR</li>
+      <li class="result"></li>
+      <li class="diffi easy">EASY</li>
+      <li class="diffi hard selected">HARD</li>
+    </ul>
+  </div>
+  <div class="colors_container">
+    <div style="margin-top:40px;">
+      <div class="color_this"></div>
+      <div class="color_this"></div>
+      <div class="color_this"></div><br>
+      <div class="color_this"></div>
+      <div class="color_this"></div>
+      <div class="color_this"></div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="jq.js"></script>
+<script>
+  var color_this_divs = document.querySelectorAll('.color_this');
+  var random_selcted = Math.floor(Math.random() * color_this_divs.length);
+  var color_name = document.getElementById('color_name'); 
+  var random_color; 
+  function color_change(){
+    for(var i=0; i<color_this_divs.length; i++){
+      let r = Math.floor(Math.random() * 255); 
+      let g = Math.floor(Math.random() * 255); 
+      let b = Math.floor(Math.random() * 255);
+      color_this_divs[i].style.background = `rgb(${r}, ${g}, ${b})`; 
+    }
+    random_color = color_this_divs[random_selcted].style.background;
+    color_name.innerText = random_color;  
+    $('.header').css('background-color','#3F6DA2');
+    $('#change_color').text('NEW COLOR');
+    $('#change_color').css('background-color', '#fff').css('color','#000');
+  }
+  
+  $('#change_color').click(function(){
+    color_change();
+  });
+  
+  $('.color_this').click(function(){
+    var _this = $(this).css('background-color');
+    $('.options ul .result').text('');
+    if(_this === random_color){
+      $('.options ul .result').text('CORRECT');
+      $('.color_this').css('background-color',random_color);
+      $('.header').css('background-color',random_color);
+      $('#change_color').text('PLAY AGAIN?');
+      $('#change_color').css('background-color', random_color).css('color','#fff');
+    }else{
+      $('.options ul .result').text('WRONG');
+      $(this).css('background-color','#333');
+    }
+  });
+  
+  $(document).ready(function(){
+    color_change();
+  });
+</script>
+</html>
